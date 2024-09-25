@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,9 +29,12 @@ public class ArticleController {
     }
 
     @PostMapping("/create")
-    public String create(@RequestParam(value = "title") String title, @RequestParam(value = "content") String content) {
-        this.articleService.create(title, content);
-        return "redirect:/article/list";
+    public String create(ArticleForm articleForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()){
+            return "article_form";
+        }
+        this.articleService.create(articleForm.getTitle(),articleForm.getContent());
+        return "redirect:/";
     }
 
     @GetMapping("/detail/{id}")
