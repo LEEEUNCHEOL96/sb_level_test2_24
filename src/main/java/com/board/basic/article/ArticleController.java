@@ -1,5 +1,6 @@
 package com.board.basic.article;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -31,7 +32,7 @@ public class ArticleController {
     }
 
     @PostMapping("/create")
-    public String create(ArticleForm articleForm, BindingResult bindingResult) {
+    public String create(@Valid ArticleForm articleForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()){
             return "article_form";
         }
