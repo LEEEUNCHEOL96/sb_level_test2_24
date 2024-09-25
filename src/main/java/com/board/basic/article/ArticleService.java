@@ -1,5 +1,6 @@
 package com.board.basic.article;
 
+import com.board.basic.User.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,12 +18,12 @@ import java.util.Optional;
 public class ArticleService {
     private final ArticleRepository articleRepository;
 
-    public void create(String title, String content) {
+    public void create(String title, String content, SiteUser user) {
         Article article = new Article();
         article.setTitle(title);
         article.setContent(content);
         article.setCreateDate(LocalDateTime.now());
-
+        article.setAuthor(user);
         this.articleRepository.save(article);
 
     }

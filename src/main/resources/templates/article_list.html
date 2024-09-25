@@ -1,20 +1,23 @@
 <html layout:decorate="~{layout}">
 <div class="container my-3" layout:fragment="content">
+
     <div class="container my-3">
         <table class="table">
             <thead class="table-dark">
             <tr>
                 <th>번호</th>
                 <th>제목</th>
+                <th>작성자</th>
                 <th>작성일시</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="article, loop : ${paging}">
-                <td th:text="${loop.count}"></td>
+                <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
                 <td>
                     <a th:href="@{|/article/detail/${article.id}|}" th:text="${article.title}"></a>
                 </td>
+                <td><span th:if="${article.author != null}" th:text="${article.author.username}"></span></td>
                 <td th:text="${#temporals.format(article.createDate, 'yyyy-MM-dd HH:mm')}"></td>
             </tr>
             </tbody>
@@ -29,10 +32,10 @@
                     </a>
                 </li>
                 <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
-                    th:if="${page >= paging.number-3 and page <= paging.number+3}"
+                    th:if="${page >= paging.number-5 and page <= paging.number+5}"
                     th:classappend="${page == paging.number} ? 'active'"
                     class="page-item">
-                    <a th:text="${page+1}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                    <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
                 </li>
                 <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
                     <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
@@ -42,7 +45,7 @@
             </ul>
         </div>
         <!-- 페이징처리 끝 -->
-        <a th:href="@{/article/create}" class="btn btn-primary">게시글 등록하기</a>
+        <a class="btn btn-primary" href="/article/create">Article 등록하기</a>
     </div>
 </div>
 </html>
